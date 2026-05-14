@@ -1,0 +1,27 @@
+# Standard Ruff Configuration (Standard Version: 0.1)
+# Reference: https://docs.astral.sh/ruff/configuration/
+
+line-length = 100
+target-version = "py312"
+
+[lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+    "N",  # pep8-naming
+]
+ignore = []
+
+[lint.isort]
+known-first-party = ["backend"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-trace"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

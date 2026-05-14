@@ -1,0 +1,33 @@
+{
+  "name": "mobile-blueprint",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0",
+    "format": "prettier --write .",
+    "test": "jest",
+    "build:android": "npx expo export --platform android"
+  },
+  "dependencies": {
+    "expo": "~54.0.0",
+    "expo-router": "~4.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.0",
+    "nativewind": "^4.2.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.9.0",
+    "@types/jest": "^29.5.12",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "latest",
+    "jest": "^29.7.0",
+    "jest-expo": "~54.0.0",
+    "prettier": "^3.2.5",
+    "typescript": "~5.9.2"
+  }
+}

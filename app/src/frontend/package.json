@@ -1,0 +1,22 @@
+{
+    "name": "frontend",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "test:e2e": "npx playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.40.0",
+        "@types/node": "^20.0.0",
+        "eslint": "^8.0.0",
+        "typescript": "^5.0.0",
+        "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "attono-ui-core": "file:../../../../libraries/ui-core"
+    }
+}
