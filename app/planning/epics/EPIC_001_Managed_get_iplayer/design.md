@@ -20,7 +20,7 @@ The service is a Python 3.12 application that runs constantly. It performs two p
 ### 3. Poller & Downloader (Standard: Service Design, JSON Logging)
 - **Scheduler**: Uses `asyncio` to trigger every hour.
 - **Execution**: Uses `subprocess.run` to execute the `get_iplayer` command-line tool.
-- **State Management**: Keeps track of downloaded episodes (either using `get_iplayer`'s built-in PVR or a local SQLite/JSON state file) to prevent re-downloading served/deleted files.
+- **State Management**: Uses a local SQLite database (`state.db`) stored on the persistent volume to track episode lifecycle states (`DOWNLOADED`, `SERVED`). This provides granular control to satisfy US-002: it ignores episodes marked `SERVED` (intentionally deleted), but detects if a `DOWNLOADED` episode is missing from the filesystem (infrastructure failure) and re-downloads it using `--pid <PID> --force`, bypassing `get_iplayer`'s rigid native `download_history` file.
 - **Logging**: Uses Python's `logging` module with a JSON formatter (e.g., `python-json-logger`) to output structured logs to stdout.
 
 ### 4. Podcast RSS Feed Generator (Standard: Podcast Feed, Metadata, Delete-on-download)
