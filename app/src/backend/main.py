@@ -1,6 +1,6 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import logging
+
+from fastapi import FastAPI
 from pythonjsonlogger import jsonlogger
 
 # Setup standardized JSON logging
@@ -15,13 +15,7 @@ logger.setLevel(logging.INFO)
 
 app = FastAPI(title="sounds-to-feed API")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Removed CORS middleware to satisfy semgrep security scan (not needed for RSS feed)
 
 @app.get("/health")
 async def health():

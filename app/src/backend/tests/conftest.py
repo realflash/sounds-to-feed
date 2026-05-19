@@ -1,7 +1,9 @@
-import pytest
 import asyncio
+
+import pytest
 from httpx import AsyncClient
 from main import app
+
 
 @pytest.fixture(scope="session")
 def event_loop():
