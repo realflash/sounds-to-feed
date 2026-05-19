@@ -6,10 +6,10 @@ As a user I want get_iplayer to be kept up-to-date automatically so that I alway
 
 ### Acceptance Criteria
 
-- [ ] When the container is built, the latest version of get_iplayer is installed.
-- [ ] The container is distroless
-- [ ] Any configuration needed by get_iplayer is included in the container image
-- [ ] The service should be designed to run constantly, so that a player can pick up the latest episodes on demand.
+- [x] When the container is built, the latest version of get_iplayer is installed.
+- [x] The container is distroless
+- [x] Any configuration needed by get_iplayer is included in the container image
+- [x] The service should be designed to run constantly, so that a player can pick up the latest episodes on demand.
 
 ## US-002 Managing episodes
 

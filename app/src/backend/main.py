@@ -1,15 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from attono_backend_core.logging.config import setup_logging
-from attono_backend_core.config import AttonoBackendSettings
+import logging
+from pythonjsonlogger import jsonlogger
 
-# Initialize shared configuration
-settings = AttonoBackendSettings()
+# Setup standardized JSON logging
+logger = logging.getLogger()
+logHandler = logging.StreamHandler()
+formatter = jsonlogger.JsonFormatter(
+    '%(asctime)s %(levelname)s %(name)s %(message)s'
+)
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+logger.setLevel(logging.INFO)
 
-# Setup standardized logging
-setup_logging(settings)
-
-app = FastAPI(title="PRODUCT_NAME API")
+app = FastAPI(title="sounds-to-feed API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,4 +26,3 @@ app.add_middleware(
 @app.get("/health")
 async def health():
     return {"status": "ok"}
-
