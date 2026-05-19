@@ -9,7 +9,7 @@ The service is a Python 3.12 application that runs constantly. It performs two p
 
 ### 1. Container Image (Standard: Distroless Container, Python 3.12)
 - **Base**: `gcr.io/distroless/python3-debian12` or similar distroless image supporting Python 3.12.
-- **Dependencies**: `get_iplayer` requires Perl. We will need a multi-stage Docker build to compile/install Perl and `get_iplayer` into a distroless base, or use a minimal base image that is as close to distroless as possible while still supporting Perl (e.g., Chainguard images).
+- **Dependencies**: `get_iplayer` requires Perl. We will use a multi-stage Docker build to compile/install Perl and `get_iplayer` into a distroless base.
 - **Security**: Runs as a non-root user.
 
 ### 2. Configuration Manager (Standard: JSON Volume Mount, Re-read on Poll)
