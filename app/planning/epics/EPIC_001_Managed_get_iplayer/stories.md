@@ -17,7 +17,7 @@ As a user I want the service to download programmes I'm interested in and make t
 
 ### Acceptance Criteria
 
-- [ ] The container is run as a service. It will run indefinitely and poll for new programmes every hour. 
+- [ ] The container is run as a service. It will run indefinitely and poll for new programmes upon startup and every hour thereafter. 
 - [ ] For each programme defined in the configuration the following steps are taken by the service:
    - The programmes are searched for. If episodes are found that are newer than the start from date then:
       - The episodes are downloaded if they have not previously been downloaded. 

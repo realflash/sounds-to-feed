@@ -48,11 +48,17 @@ class StateManager:
             logger.info(f"Marked episode {pid} as SERVED")
 
     def get_status(self, pid: str) -> str | None:
+        row = self.get_episode(pid)
+        return row['status'] if row else None
+
+    def get_episode(self, pid: str) -> dict | None:
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT status FROM episodes WHERE pid = ?', (pid,))
+            cursor.execute('SELECT status, filename FROM episodes WHERE pid = ?', (pid,))
             row = cursor.fetchone()
-            return row[0] if row else None
+            if row:
+                return {'status': row[0], 'filename': row[1]}
+            return None
 
     def get_downloaded_episodes(self):
         with self._get_connection() as conn:

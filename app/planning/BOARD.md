@@ -7,8 +7,8 @@
   - [ ] Example Story 2
 
 ## 🚀 In Progress (Active)
-- [ ] [Epic Name](epics/EPIC_001_...)
-  - [/] [Story Name](epics/EPIC_001_.../stories.md)
+- [/] [EPIC-001: Managed get_iplayer (under revision)](epics/EPIC_001_Managed_get_iplayer)
+  - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
 
 ## ✅ Done (Completed)
 - [x] BUG-2605221156: Container exits immediately because `main.py` has no entrypoint
