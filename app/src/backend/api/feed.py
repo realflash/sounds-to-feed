@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import Response
 from feedgen.feed import FeedGenerator
+from mutagen.mp4 import MP4
 
 from src.backend.db.state import StateManager
 
@@ -50,7 +51,18 @@ async def get_feed(request: Request, state_manager: StateManager = Depends(get_s
         file_size = str(path.stat().st_size)
         fe.enclosure(audio_url, file_size, 'audio/mp4')
         
+        # Try to extract the original broadcast date from MP4 metadata
         mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=ZoneInfo('UTC'))
+        try:
+            audio = MP4(str(path))
+            if '©day' in audio.tags and audio.tags['©day']:
+                day_str = audio.tags['©day'][0]
+                # parse '2026-05-20T00:00:00Z'
+                parsed_date = datetime.fromisoformat(day_str.replace('Z', '+00:00'))
+                mtime = parsed_date
+        except Exception as e:
+            logger.warning(f"Could not extract date from {filename}: {e}")
+            
         fe.pubDate(mtime)
         
     rss_feed = fg.rss_str(pretty=True)

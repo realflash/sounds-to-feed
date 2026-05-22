@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 from pathlib import Path
 
 from src.backend.core.config_manager import ConfigManager
@@ -21,6 +22,11 @@ class Poller:
     async def _poll_programme(self, name: str):
         logger.info(f"Polling for programme: {name}")
         try:
+            env = os.environ.copy()
+            env["LANG"] = "C.UTF-8"
+            env["LC_ALL"] = "C.UTF-8"
+            env["PERL_UNICODE"] = "AS"
+            
             # Run get_iplayer search
             process = await asyncio.create_subprocess_exec(
                 "get_iplayer",
@@ -28,7 +34,8 @@ class Poller:
                 f"^{name}$",
                 "--listformat=<pid>|<name>|<episode>|<desc>|<firstbcast>",
                 stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+                stderr=asyncio.subprocess.PIPE,
+                env=env
             )
             stdout, stderr = await process.communicate()
             if process.returncode != 0:
@@ -72,11 +79,17 @@ class Poller:
         file_prefix = f"{pid}_{safe_name}_{safe_episode}"
         
         try:
+            env = os.environ.copy()
+            env["LANG"] = "C.UTF-8"
+            env["LC_ALL"] = "C.UTF-8"
+            env["PERL_UNICODE"] = "AS"
+
             process = await asyncio.create_subprocess_exec(
                 "get_iplayer", "--type=radio", "--pid", pid, "--get", "--force",
                 "--file-prefix", file_prefix, "--output", str(self.output_dir),
                 stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+                stderr=asyncio.subprocess.PIPE,
+                env=env
             )
             stdout, stderr = await process.communicate()
             if process.returncode != 0:
