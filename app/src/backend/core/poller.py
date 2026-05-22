@@ -71,6 +71,7 @@ class Poller:
                     pid = parts[0]
                     prog_name = parts[1]
                     episode = parts[2]
+                    firstbcast = parts[4] if len(parts) >= 5 else "Unknown Date"
                     
                     episode_data = self.state_manager.get_episode(pid)
                     if episode_data:
@@ -88,7 +89,9 @@ class Poller:
                                     "Re-downloading."
                                 )
                     
-                    logger.info(f"Downloading new episode {pid} for {name}")
+                    logger.info(
+                        f"Downloading new episode {pid} for {name} (published: {firstbcast})"
+                    )
                     await self._download_episode(pid, prog_name, episode)
         except Exception as e:
             logger.error(f"Error polling programme {name}: {e}")
