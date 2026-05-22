@@ -43,6 +43,7 @@ docker rm "$CONTAINER_NAME" 2>/dev/null
 echo "Launching fresh container ($DISPLAY_VERSION)..."
 docker run -d \
     --name "$CONTAINER_NAME" \
+    -p 8008:8000 \
     -v "$(pwd)/data:/data" \
     -v "$(pwd)/config:/config" \
     -e SECRET_KEY \
@@ -50,7 +51,7 @@ docker run -d \
     "$IMAGE_NAME"
 
 echo "------------------------------------------------"
-echo "Container $CONTAINER_NAME is running at http://localhost:8000"
+echo "Container $CONTAINER_NAME is running at http://localhost:8008"
 echo "Data directory mounted at: $(pwd)/data"
 echo "Config directory mounted at: $(pwd)/config"
 echo "View logs with: docker logs -f $CONTAINER_NAME"

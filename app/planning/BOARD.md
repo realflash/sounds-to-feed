@@ -11,4 +11,5 @@
   - [/] [Story Name](epics/EPIC_001_.../stories.md)
 
 ## ✅ Done (Completed)
+- [x] BUG-2605221156: Container exits immediately because `main.py` has no entrypoint
 - [x] Initial Repository Setup
