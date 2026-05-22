@@ -22,7 +22,7 @@ As a user I want the service to download programmes I'm interested in and make t
    - The programmes are searched for. If episodes are found that are newer than the start from date then:
       - The episodes are downloaded if they have not previously been downloaded. 
       - The episodes are named "YYYY-MM-DD_HHMM_<display name>_<episode_name>.<ext>" or similar.
-- [ ] The service's operation is logged to the console using a structured format (JSON).
+- [x] The service's operation is logged to the console using a structured format (JSON). Download log messages must include the episode's original publish date.
 - [ ] The service should not re-download episodes that have already been downloaded.
 - [ ] The service should not re-download episodes that have been downloaded previously, and then intentionally deleted from the filesystem by the service itself. These episodes should be considered "served", and no longer required. 
 - [ ] The service should re-download an episode if it has been deleted for any other reason (such as infrastructure failure)
