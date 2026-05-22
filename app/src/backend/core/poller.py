@@ -30,7 +30,9 @@ class Poller:
             # Run get_iplayer search
             process = await asyncio.create_subprocess_exec(
                 "get_iplayer",
-                "--type=radio",
+                "--encoding-locale=UTF-8", 
+                "--encoding-locale-fs=UTF-8", 
+                "--encoding-console-out=UTF-8",
                 f"^{name}$",
                 "--listformat=<pid>|<name>|<episode>|<desc>|<firstbcast>",
                 stdout=asyncio.subprocess.PIPE,
@@ -85,7 +87,11 @@ class Poller:
             env["PERL_UNICODE"] = "AS"
 
             process = await asyncio.create_subprocess_exec(
-                "get_iplayer", "--type=radio", "--pid", pid, "--get", "--force",
+                "get_iplayer", 
+                "--encoding-locale=UTF-8", 
+                "--encoding-locale-fs=UTF-8", 
+                "--encoding-console-out=UTF-8",
+                "--type=radio", "--pid", pid, "--get", "--force",
                 "--file-prefix", file_prefix, "--output", str(self.output_dir),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
