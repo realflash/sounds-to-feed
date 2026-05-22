@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, AsyncMock
 
 import pytest
 
@@ -15,11 +15,15 @@ async def test_poller_poll_programme():
     with patch('src.backend.core.poller.asyncio.create_subprocess_exec') as mock_exec:
         mock_process = MagicMock()
         mock_process.returncode = 0
+        mock_process.wait = AsyncMock(return_value=0)
         
-        async def mock_communicate():
-            return b"b0123456|Test Prog|Test Ep|Desc|Date\n", b""
+        mock_process.stdout.read = AsyncMock(return_value=b"b0123456|Test Prog|Test Ep|Desc|Date\n")
+        
+        async def mock_stderr_iter():
+            yield b""
+            return
             
-        mock_process.communicate = mock_communicate
+        mock_process.stderr = mock_stderr_iter()
         mock_exec.return_value = mock_process
         
         with patch.object(poller, '_download_episode') as mock_download:
@@ -39,11 +43,15 @@ async def test_poller_poll_programme_already_served():
     with patch('src.backend.core.poller.asyncio.create_subprocess_exec') as mock_exec:
         mock_process = MagicMock()
         mock_process.returncode = 0
+        mock_process.wait = AsyncMock(return_value=0)
         
-        async def mock_communicate():
-            return b"b0123456|Test Prog|Test Ep|Desc|Date\n", b""
+        mock_process.stdout.read = AsyncMock(return_value=b"b0123456|Test Prog|Test Ep|Desc|Date\n")
+        
+        async def mock_stderr_iter():
+            yield b""
+            return
             
-        mock_process.communicate = mock_communicate
+        mock_process.stderr = mock_stderr_iter()
         mock_exec.return_value = mock_process
         
         with patch.object(poller, '_download_episode') as mock_download:
