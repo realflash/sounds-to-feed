@@ -20,7 +20,7 @@ formatter = jsonlogger.JsonFormatter(
 )
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 async def polling_task():
     config_manager = ConfigManager()

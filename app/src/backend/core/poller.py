@@ -39,6 +39,7 @@ class Poller:
                 stderr=asyncio.subprocess.PIPE,
                 env=env
             )
+            logger.debug(f"Executing get_iplayer search for {name} and waiting for response...")
             stdout, stderr = await process.communicate()
             if process.returncode != 0:
                 logger.error(f"get_iplayer search failed for {name}: {stderr.decode()}")
