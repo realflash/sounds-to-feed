@@ -27,25 +27,43 @@ class Poller:
             env["LC_ALL"] = "C.UTF-8"
             env["PERL_UNICODE"] = "AS"
             
-            # Run get_iplayer search
-            process = await asyncio.create_subprocess_exec(
+            cmd = [
                 "get_iplayer",
                 "--encoding-locale=UTF-8", 
                 "--encoding-locale-fs=UTF-8", 
                 "--encoding-console-out=UTF-8",
+                "--type=radio",
                 f"^{name}$",
-                "--listformat=<pid>|<name>|<episode>|<desc>|<firstbcast>",
+                "--listformat=<pid>|<name>|<episode>|<desc>|<firstbcast>"
+            ]
+            logger.debug(f"Executing search command: {' '.join(cmd)}")
+            
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 env=env
             )
-            logger.debug(f"Executing get_iplayer search for {name} and waiting for response...")
-            stdout, stderr = await process.communicate()
+            
+            async def read_stderr():
+                async for line in process.stderr:
+                    decoded = line.decode('utf-8', errors='replace').strip()
+                    if decoded:
+                        logger.debug(f"[get_iplayer search stderr] {decoded}")
+
+            stdout_bytes, _ = await asyncio.gather(
+                process.stdout.read(),
+                read_stderr()
+            )
+            
+            await process.wait()
+            
             if process.returncode != 0:
-                logger.error(f"get_iplayer search failed for {name}: {stderr.decode()}")
+                logger.error(f"get_iplayer search failed for {name} with code {process.returncode}")
                 return
 
-            lines = stdout.decode().splitlines()
+            stdout_str = stdout_bytes.decode('utf-8', errors='replace')
+            lines = stdout_str.splitlines()
             for line in lines:
                 parts = line.split("|")
                 # Look for lines that start with an 8-character PID
@@ -87,20 +105,38 @@ class Poller:
             env["LC_ALL"] = "C.UTF-8"
             env["PERL_UNICODE"] = "AS"
 
-            process = await asyncio.create_subprocess_exec(
+            cmd = [
                 "get_iplayer", 
                 "--encoding-locale=UTF-8", 
                 "--encoding-locale-fs=UTF-8", 
                 "--encoding-console-out=UTF-8",
                 "--type=radio", "--pid", pid, "--get", "--force",
-                "--file-prefix", file_prefix, "--output", str(self.output_dir),
+                "--file-prefix", file_prefix, "--output", str(self.output_dir)
+            ]
+            logger.debug(f"Executing download command: {' '.join(cmd)}")
+            
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 env=env
             )
-            stdout, stderr = await process.communicate()
+            
+            async def stream_to_logger(stream, prefix):
+                async for line in stream:
+                    decoded = line.decode('utf-8', errors='replace').strip()
+                    if decoded:
+                        logger.debug(f"{prefix} {decoded}")
+
+            await asyncio.gather(
+                stream_to_logger(process.stdout, f"[get_iplayer {pid} stdout]"),
+                stream_to_logger(process.stderr, f"[get_iplayer {pid} stderr]")
+            )
+            
+            await process.wait()
+            
             if process.returncode != 0:
-                logger.error(f"Failed to download episode {pid}: {stderr.decode()}")
+                logger.error(f"Failed to download episode {pid} with code {process.returncode}")
                 return
                 
             # Find the downloaded file
