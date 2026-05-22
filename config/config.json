@@ -1,0 +1,10 @@
+{
+  "global_config": {
+    "delete_on_download": true
+  },
+  "programmes": [
+    {
+      "name": "Business Daily"
+    }
+  ]
+}

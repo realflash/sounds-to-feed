@@ -1,0 +1,14 @@
+FROM debian:12-slim AS builder
+RUN apt-get update && apt-get install -y perl curl ffmpeg atomicparsley libc6
+RUN curl -L https://raw.githubusercontent.com/get-iplayer/get_iplayer/master/get_iplayer -o /usr/local/bin/get_iplayer && chmod +x /usr/local/bin/get_iplayer
+
+FROM gcr.io/distroless/python3-debian12
+COPY --from=builder /usr/bin/perl /usr/bin/perl
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libperl.so.5.36 /usr/lib/x86_64-linux-gnu/
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libcrypt.so.1 /usr/lib/x86_64-linux-gnu/
+COPY --from=builder /usr/share/perl /usr/share/perl
+COPY --from=builder /usr/lib/x86_64-linux-gnu/perl /usr/lib/x86_64-linux-gnu/perl
+COPY --from=builder /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl-base
+COPY --from=builder /usr/local/bin/get_iplayer /usr/local/bin/get_iplayer
+COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
+ENTRYPOINT ["/usr/bin/perl", "/usr/local/bin/get_iplayer", "--version"]

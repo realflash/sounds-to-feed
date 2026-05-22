@@ -2,7 +2,8 @@ import asyncio
 
 import pytest
 from httpx import AsyncClient
-from main import app
+
+from src.backend.main import app
 
 
 @pytest.fixture(scope="session")

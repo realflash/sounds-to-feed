@@ -14,7 +14,8 @@ dev = [
     "ruff",
     "pytest",
     "bandit",
-    "pip-audit"
+    "pip-audit",
+    "httpx"
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -28,3 +29,6 @@ target-version = "py312"
 select = ["E", "F", "B", "I"]
 # B008: Do not perform function call in argument defaults (FastAPI Depends)
 ignore = ["B008"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "src/backend/tests"]

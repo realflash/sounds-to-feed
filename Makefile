@@ -27,7 +27,7 @@ fmt-backend: ## Format web source code
 lint: lint-backend ## Run all static analysis
 
 lint-backend: ## Run web static analysis
-	cd app && PYTHONPATH=.. $(RUN_UV) ruff check src/backend
+	cd app && PYTHONPATH=. $(RUN_UV) ruff check src/backend
 
 code-scan: ## Run source-level security scanners
 	@echo "Running Source Code Security Scans..."
@@ -44,10 +44,10 @@ container-scan: ## Run container vulnerability scanner
 test: test-backend ## Run all unit and integration tests
 
 test-backend: ## Run web unit and integration tests
-	cd app && PYTHONPATH=.. $(RUN_UV) pytest src/backend/tests/ || true
+	cd app && PYTHONPATH=. $(RUN_UV) pytest src/backend/tests/
 
 dev: ## Run development servers
-	PYTHONPATH=app cd app && uv run uvicorn src.backend.main:app --reload --port 8000
+	cd app && PYTHONPATH=. uv run uvicorn src.backend.main:app --reload --port 8000
 
 build: build-container ## Build all components for production
 

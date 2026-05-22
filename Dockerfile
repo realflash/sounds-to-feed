@@ -42,6 +42,9 @@ ENV PYTHONUNBUFFERED=1
 COPY --from=backend-builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=backend-builder /usr/local/bin /usr/local/bin
 
+# Remove pip and build tools to reduce vulnerabilities and make it more distroless-like
+RUN python -m pip uninstall -y pip setuptools wheel || true
+
 # Copy backend source
 COPY app/src/backend /app/src/backend
 

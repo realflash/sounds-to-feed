@@ -74,8 +74,8 @@ fi
 
 # 5. Container Security
 if [ $BUILD_CONT_RESULT -eq 0 ]; then
-    # We allow this to fail without breaking the whole build if trivy isn't available, but it should run.
-    run_stage "Container Security" "make container-scan || echo 'Trivy check failed or not installed'"
+    # We require this to pass. If trivy fails, the build pipeline should fail.
+    run_stage "Container Security" "make container-scan"
     CONTAINER_RESULT=$?
 else
     STAGES+=("Container Security")

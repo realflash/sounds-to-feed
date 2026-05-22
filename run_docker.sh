@@ -3,23 +3,17 @@
 # Standard Version: 0.2
 
 # Configuration
-PROJECT_NAME="project-name"
-IMAGE_NAME="${PROJECT_NAME}:latest"
+PROJECT_NAME="sounds-to-feed"
+IMAGE_NAME="${PROJECT_NAME}-app:latest"
 CONTAINER_NAME="${PROJECT_NAME}-app"
-DB_FILE_LOCAL="./data/test-data.db"
-DB_FILE_CONTAINER="/app/test-data.db"
+DATA_DIR="./data"
+CONFIG_DIR="./config"
 
-# Ensure data directory exists
-mkdir -p ./data
+# Ensure data and config directories exist
+mkdir -p "$DATA_DIR" "$CONFIG_DIR"
 
-# If the database file exists, back it up and start fresh to ensure "clean db"
-if [ -f "$DB_FILE_LOCAL" ]; then
-    echo "Backing up existing database to ${DB_FILE_LOCAL}.bak"
-    mv "$DB_FILE_LOCAL" "${DB_FILE_LOCAL}.bak"
-fi
-
-# Create an empty database file
-touch "$DB_FILE_LOCAL"
+# Allow container user to write to data directory if needed
+chmod 777 "$DATA_DIR" "$CONFIG_DIR" 2>/dev/null || true
 
 # Load environment variables from .env if it exists
 if [ -f .env ]; then
@@ -32,7 +26,7 @@ CURRENT_BUILD_ID=$(make info 2>/dev/null | grep "Build ID:" | cut -d' ' -f3)
 
 # Check if the 'latest' image actually matches this Build ID
 IMAGE_ID_LATEST=$(docker inspect --format='{{.Id}}' "$IMAGE_NAME" 2>/dev/null)
-IMAGE_ID_VER=$(docker inspect --format='{{.Id}}' "${PROJECT_NAME}:$CURRENT_BUILD_ID" 2>/dev/null)
+IMAGE_ID_VER=$(docker inspect --format='{{.Id}}' "${PROJECT_NAME}-app:$CURRENT_BUILD_ID" 2>/dev/null)
 
 if [ "$IMAGE_ID_LATEST" == "$IMAGE_ID_VER" ] && [ -n "$IMAGE_ID_LATEST" ]; then
     DISPLAY_VERSION="$CURRENT_BUILD_ID"
@@ -49,14 +43,15 @@ docker rm "$CONTAINER_NAME" 2>/dev/null
 echo "Launching fresh container ($DISPLAY_VERSION)..."
 docker run -d \
     --name "$CONTAINER_NAME" \
-    -p 8000:8000 \
-    -v "$(pwd)/data/test-data.db:$DB_FILE_CONTAINER" \
+    -v "$(pwd)/data:/data" \
+    -v "$(pwd)/config:/config" \
     -e SECRET_KEY \
     -e AUTO_SEED_DATA \
     "$IMAGE_NAME"
 
 echo "------------------------------------------------"
 echo "Container $CONTAINER_NAME is running at http://localhost:8000"
-echo "Database is mounted at: $DB_FILE_LOCAL"
+echo "Data directory mounted at: $(pwd)/data"
+echo "Config directory mounted at: $(pwd)/config"
 echo "View logs with: docker logs -f $CONTAINER_NAME"
 echo "------------------------------------------------"
