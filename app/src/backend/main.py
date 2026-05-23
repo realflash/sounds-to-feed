@@ -31,6 +31,7 @@ async def polling_task():
     while True:
         try:
             logger.info("Starting polling cycle")
+            config_manager.load_config()
             await poller.poll_all()
         except Exception as e:
             logger.error(f"Error in polling cycle: {e}")

@@ -33,14 +33,14 @@ As an administrator I want to be able to update to easily specify the programmes
 
 ### Acceptance Criteria
 
-- [ ] A JSON file mounted inside the container is checked for programmes to download and other configuration. The file contains an array of programmes:
+- [x] A JSON file mounted inside the container is checked for programmes to download and other configuration. The file contains an array of programmes:
    - A programme name as get_iplayer knows it
    - A start from date (optional)
    - A display name (optional)
      It may contain additional configuration.
-- [ ] The configuration file is re-read by the service on each poll, so changes will take effect without a rebuild of the container.
-- [ ] The directory for storing the downloaded files is defined in the configuration.
-- [ ] The directory for storing the downloaded files should be a volume mount.
+- [x] The configuration file is re-read by the service on each poll, so changes will take effect without a rebuild of the container.
+- [x] The directory for storing the downloaded files is defined in the configuration.
+- [x] The directory for storing the downloaded files should be a volume mount.
 
 ## US-004 Podcast feed conversion
 

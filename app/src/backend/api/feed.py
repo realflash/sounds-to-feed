@@ -8,6 +8,7 @@ from fastapi.responses import Response
 from feedgen.feed import FeedGenerator
 from mutagen.mp4 import MP4
 
+from src.backend.core.config_manager import ConfigManager
 from src.backend.db.state import StateManager
 
 logger = logging.getLogger(__name__)
@@ -16,8 +17,15 @@ router = APIRouter()
 def get_state_manager() -> StateManager:
     return StateManager()
 
+def get_config_manager() -> ConfigManager:
+    return ConfigManager()
+
 @router.get("/feed.xml")
-async def get_feed(request: Request, state_manager: StateManager = Depends(get_state_manager)):
+async def get_feed(
+    request: Request, 
+    state_manager: StateManager = Depends(get_state_manager), 
+    config_manager: ConfigManager = Depends(get_config_manager)
+):
     fg = FeedGenerator()
     fg.title('Sounds to Feed')
     fg.description('Downloaded get_iplayer radio programmes')
@@ -30,6 +38,7 @@ async def get_feed(request: Request, state_manager: StateManager = Depends(get_s
     fg.language('en')
     
     episodes = state_manager.get_downloaded_episodes()
+    config = config_manager.get_config()
     
     for pid, filename in episodes:
         path = Path(filename)
@@ -39,11 +48,22 @@ async def get_feed(request: Request, state_manager: StateManager = Depends(get_s
         fe = fg.add_entry()
         fe.id(pid)
         
-        name_parts = path.stem.split("_", 2)
-        if len(name_parts) >= 3:
-            title = f"{name_parts[1].replace('_', ' ')}: {name_parts[2].replace('_', ' ')}"
+        # Find matching programme in config
+        for p in config.programmes:
+            safe_name = p.name.replace(" ", "_")
+            prefix = f"{pid}_{safe_name}_"
+            if path.stem.startswith(prefix):
+                display = p.display_name if p.display_name else p.name
+                episode_part = path.stem[len(prefix):].replace('_', ' ')
+                title = f"{display}: {episode_part}"
+                break
         else:
-            title = path.stem
+            # Fallback if no matching programme
+            name_parts = path.stem.split("_", 2)
+            if len(name_parts) >= 3:
+                title = f"{name_parts[1].replace('_', ' ')}: {name_parts[2].replace('_', ' ')}"
+            else:
+                title = path.stem
             
         fe.title(title)
         

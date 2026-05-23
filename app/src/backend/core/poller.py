@@ -13,7 +13,6 @@ class Poller:
     def __init__(self, config_manager: ConfigManager, state_manager: StateManager):
         self.config_manager = config_manager
         self.state_manager = state_manager
-        self.output_dir = Path("/data")
 
     async def poll_all(self):
         config = self.config_manager.get_config()
@@ -78,7 +77,10 @@ class Poller:
                         # firstbcast is ISO8601 string, e.g., '2026-04-23T07:50:00+00:00'
                         # start_from_date is 'YYYY-MM-DD'
                         if firstbcast[:10] < prog.start_from_date:
-                            logger.debug(f"Skipping {pid} (published {firstbcast} before start_from_date {prog.start_from_date})")
+                            logger.debug(
+                                f"Skipping {pid} (published {firstbcast} "
+                                f"before start_from_date {prog.start_from_date})"
+                            )
                             continue
                     
                     episode_data = self.state_manager.get_episode(pid)
@@ -111,6 +113,8 @@ class Poller:
         # Sanitize file prefix to avoid Wide character error in get_iplayer's decode_fs
         file_prefix = re.sub(r'[^A-Za-z0-9_\-]', '', raw_prefix).replace("/", "_")
         
+        output_dir = Path(self.config_manager.get_config().global_config.output_dir)
+        
         try:
             env = os.environ.copy()
             env["LANG"] = "C.UTF-8"
@@ -122,7 +126,7 @@ class Poller:
                 "--encoding-locale-fs=UTF-8", 
                 "--encoding-console-out=UTF-8",
                 "--type=radio", "--pid", pid, "--get", "--force",
-                "--file-prefix", file_prefix, "--output", str(self.output_dir)
+                "--file-prefix", file_prefix, "--output", str(output_dir)
             ]
             logger.debug(f"Executing download command: {' '.join(cmd)}")
             
@@ -152,14 +156,14 @@ class Poller:
                 
             # Find the downloaded file
             # get_iplayer typically creates a .m4a file for radio
-            expected_file = self.output_dir / f"{file_prefix}.m4a"
+            expected_file = output_dir / f"{file_prefix}.m4a"
             if expected_file.exists():
                 self.state_manager.mark_downloaded(pid, str(expected_file))
                 logger.info(f"Successfully downloaded {pid} to {expected_file}")
             else:
                 # If it didn't create exactly that file, let's search for any matching file
 
-                matching_files = list(self.output_dir.glob(f"{file_prefix}*"))
+                matching_files = list(output_dir.glob(f"{file_prefix}*"))
                 if matching_files:
                     self.state_manager.mark_downloaded(pid, str(matching_files[0]))
                     logger.info(f"Successfully downloaded {pid} to {matching_files[0]}")

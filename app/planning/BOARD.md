@@ -8,7 +8,7 @@
 
 ## 🚀 In Progress (Active)
 - [/] BUG-2605230620: get_iplayer fails with Wide character error for titles with unicode apostrophes
-- [/] [EPIC-001: Managed get_iplayer](epics/EPIC_001_Managed_get_iplayer)
+- [/] [EPIC-001: Managed get_iplayer (Under Revision)](epics/EPIC_001_Managed_get_iplayer)
   - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
 
 ## ✅ Done (Completed)

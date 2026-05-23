@@ -10,6 +10,7 @@ class ProgrammeConfig(BaseModel):
 
 class GlobalConfig(BaseModel):
     delete_on_download: bool = True
+    output_dir: str = "/data"
 
 class AppConfig(BaseModel):
     global_config: GlobalConfig = GlobalConfig()
