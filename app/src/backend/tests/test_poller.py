@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from src.backend.core.poller import Poller
+from src.backend.schemas.config import ProgrammeConfig
 
 
 @pytest.mark.anyio
@@ -29,7 +30,7 @@ async def test_poller_poll_programme():
         with patch.object(poller, '_download_episode') as mock_download:
             mock_state.get_episode.return_value = None
             
-            await poller._poll_programme("Test")
+            await poller._poll_programme(ProgrammeConfig(name="Test"))
             
             mock_download.assert_called_once_with("b0123456", "Test Prog", "Test Ep")
 
@@ -57,7 +58,7 @@ async def test_poller_poll_programme_already_served():
         with patch.object(poller, '_download_episode') as mock_download:
             mock_state.get_episode.return_value = {'status': 'SERVED', 'filename': '/data/test.m4a'}
             
-            await poller._poll_programme("Test")
+            await poller._poll_programme(ProgrammeConfig(name="Test"))
             
             mock_download.assert_not_called()
 
@@ -84,7 +85,7 @@ async def test_poller_environment_variables():
         
         with patch.object(poller, '_download_episode'):
             mock_state.get_episode.return_value = None
-            await poller._poll_programme("Test")
+            await poller._poll_programme(ProgrammeConfig(name="Test"))
             
             # The search command should have been called
             assert mock_exec.call_count == 1

@@ -4,7 +4,8 @@
   },
   "programmes": [
     {
-      "name": "Business Daily"
+      "name": "Business Daily",
+      "start_from_date": "2026-04-01"
     }
   ]
 }

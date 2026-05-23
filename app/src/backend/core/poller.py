@@ -5,6 +5,7 @@ from pathlib import Path
 
 from src.backend.core.config_manager import ConfigManager
 from src.backend.db.state import StateManager
+from src.backend.schemas.config import ProgrammeConfig
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +18,10 @@ class Poller:
     async def poll_all(self):
         config = self.config_manager.get_config()
         for prog in config.programmes:
-            await self._poll_programme(prog.name)
+            await self._poll_programme(prog)
 
-    async def _poll_programme(self, name: str):
+    async def _poll_programme(self, prog: ProgrammeConfig):
+        name = prog.name
         logger.info(f"Polling for programme: {name}")
         try:
             env = os.environ.copy()
@@ -71,6 +73,13 @@ class Poller:
                     prog_name = parts[1]
                     episode = parts[2]
                     firstbcast = parts[4] if len(parts) >= 5 else "Unknown Date"
+                    
+                    if prog.start_from_date and firstbcast != "Unknown Date":
+                        # firstbcast is ISO8601 string, e.g., '2026-04-23T07:50:00+00:00'
+                        # start_from_date is 'YYYY-MM-DD'
+                        if firstbcast[:10] < prog.start_from_date:
+                            logger.debug(f"Skipping {pid} (published {firstbcast} before start_from_date {prog.start_from_date})")
+                            continue
                     
                     episode_data = self.state_manager.get_episode(pid)
                     if episode_data:
