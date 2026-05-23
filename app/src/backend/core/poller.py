@@ -25,7 +25,6 @@ class Poller:
             env = os.environ.copy()
             env["LANG"] = "C.UTF-8"
             env["LC_ALL"] = "C.UTF-8"
-            env["PERL_UNICODE"] = "AS"
             
             cmd = [
                 "get_iplayer",
@@ -106,7 +105,6 @@ class Poller:
             env = os.environ.copy()
             env["LANG"] = "C.UTF-8"
             env["LC_ALL"] = "C.UTF-8"
-            env["PERL_UNICODE"] = "AS"
 
             cmd = [
                 "get_iplayer", 
