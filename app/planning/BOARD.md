@@ -7,6 +7,7 @@
   - [ ] Example Story 2
 
 ## 🚀 In Progress (Active)
+- [/] BUG-2605231738: Poller stops downloading after 21 episodes
 - [/] [EPIC-001: Managed get_iplayer](epics/EPIC_001_Managed_get_iplayer)
   - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
 
