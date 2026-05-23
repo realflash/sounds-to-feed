@@ -96,10 +96,11 @@ class Poller:
             logger.error(f"Error polling programme {name}: {e}")
 
     async def _download_episode(self, pid: str, prog_name: str, episode: str):
+        import re
         # We use a safe filename prefix without spaces
-        safe_name = prog_name.replace(" ", "_").replace("/", "_")
-        safe_episode = episode.replace(" ", "_").replace("/", "_")
-        file_prefix = f"{pid}_{safe_name}_{safe_episode}"
+        raw_prefix = f"{pid}_{prog_name}_{episode}".replace(" ", "_")
+        # Sanitize file prefix to avoid Wide character error in get_iplayer's decode_fs
+        file_prefix = re.sub(r'[^A-Za-z0-9_\-]', '', raw_prefix).replace("/", "_")
         
         try:
             env = os.environ.copy()
