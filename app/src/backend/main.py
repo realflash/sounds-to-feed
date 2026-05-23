@@ -16,7 +16,8 @@ from src.backend.db.state import StateManager
 logger = logging.getLogger()
 logHandler = logging.StreamHandler()
 formatter = jsonlogger.JsonFormatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s'
+    '%(asctime)s %(levelname)s %(name)s %(message)s',
+    json_ensure_ascii=False
 )
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
