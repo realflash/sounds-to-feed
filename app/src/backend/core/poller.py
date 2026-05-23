@@ -34,7 +34,7 @@ class Poller:
                 "--encoding-console-out=UTF-8",
                 "--type=radio",
                 f"^{name}$",
-                "--listformat=<pid>|<name>|<episode>|<desc>|<firstbcastdate>"
+                "--listformat=<pid>|<name>|<episode>|<desc>|<available>"
             ]
             logger.debug(f"Executing search command: {' '.join(cmd)}")
             
