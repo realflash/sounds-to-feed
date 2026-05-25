@@ -40,14 +40,13 @@ async def get_feed(
     episodes = state_manager.get_downloaded_episodes()
     config = config_manager.get_config()
     
+    feed_items = []
+    
     for pid, filename in episodes:
         path = Path(filename)
         if not path.exists():
             continue
             
-        fe = fg.add_entry()
-        fe.id(pid)
-        
         # Find matching programme in config
         for p in config.programmes:
             safe_name = p.name.replace(" ", "_")
@@ -64,13 +63,7 @@ async def get_feed(
                 title = f"{name_parts[1].replace('_', ' ')}: {name_parts[2].replace('_', ' ')}"
             else:
                 title = path.stem
-            
-        fe.title(title)
-        
-        audio_url = base_url + f"/audio/{pid}"
-        file_size = str(path.stat().st_size)
-        fe.enclosure(audio_url, file_size, 'audio/mp4')
-        
+                
         # Try to extract the original broadcast date from MP4 metadata
         mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=ZoneInfo('UTC'))
         try:
@@ -83,7 +76,25 @@ async def get_feed(
         except Exception as e:
             logger.warning(f"Could not extract date from {filename}: {e}")
             
-        fe.pubDate(mtime)
+        feed_items.append({
+            'pid': pid,
+            'title': title,
+            'path': path,
+            'mtime': mtime,
+        })
+        
+    # Sort items by mtime descending (newest first)
+    feed_items.sort(key=lambda x: x['mtime'], reverse=False)
+    
+    for item in feed_items:
+        fe = fg.add_entry()
+        fe.id(item['pid'])
+        fe.title(item['title'])
+        
+        audio_url = base_url + f"/audio/{item['pid']}"
+        file_size = str(item['path'].stat().st_size)
+        fe.enclosure(audio_url, file_size, 'audio/mp4')
+        fe.pubDate(item['mtime'])
         
     rss_feed = fg.rss_str(pretty=True)
     return Response(content=rss_feed, media_type="application/xml")
