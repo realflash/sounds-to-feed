@@ -10,6 +10,7 @@ dependencies = [
     "feedgen>=1.0.0",
     "starlette>=1.0.1",
     "mutagen>=1.47.0",
+    "httpx>=0.28.1",
 ]
 
 [dependency-groups]
@@ -17,8 +18,7 @@ dev = [
     "ruff",
     "pytest",
     "bandit",
-    "pip-audit",
-    "httpx"
+    "pip-audit"
 ]
 
 [tool.hatch.build.targets.wheel]

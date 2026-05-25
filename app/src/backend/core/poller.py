@@ -69,7 +69,12 @@ class Poller:
                         break
                         
                     for episode in items:
-                        pid = episode.get('id')
+                        urn = episode.get('urn', '')
+                        if 'episode:' in urn:
+                            pid = urn.split('episode:')[-1]
+                        else:
+                            pid = episode.get('id')
+                            
                         prog_name = name
                         titles = episode.get('titles', {})
                         ep_title = titles.get('secondary', titles.get('primary', pid))

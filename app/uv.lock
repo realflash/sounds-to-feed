@@ -40,6 +40,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "feedgen" },
+    { name = "httpx" },
     { name = "mutagen" },
     { name = "python-json-logger" },
     { name = "starlette" },
@@ -49,7 +50,6 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "bandit" },
-    { name = "httpx" },
     { name = "pip-audit" },
     { name = "pytest" },
     { name = "ruff" },
@@ -59,6 +59,7 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.110.0" },
     { name = "feedgen", specifier = ">=1.0.0" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "mutagen", specifier = ">=1.47.0" },
     { name = "python-json-logger", specifier = ">=2.0.7" },
     { name = "starlette", specifier = ">=1.0.1" },
@@ -68,7 +69,6 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bandit" },
-    { name = "httpx" },
     { name = "pip-audit" },
     { name = "pytest" },
     { name = "ruff" },
