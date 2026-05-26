@@ -6,6 +6,230 @@
     {
       "name": "Business Daily",
       "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Shadow World",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Cautionary Tales with Tim Harford",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "When It Hits The Fan",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Seriously...",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "What's Up Docs?",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "What? Seriously??",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Naked Week",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Strong Message Here",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Americast",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Paul Sinha's Perfect Pub Quiz",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Too Long; Didn't Read",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Communicating with Ros Atkins",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Child",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "One Person Found This Helpful",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "More or Less",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Food for Life by Tim Spector",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Rare Earth",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Revisionist History",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Infinite Monkey Cage",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "I'm Sorry I Haven't a Clue",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Fed with Chris van Tulleken",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "How to Win a Campaign",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Uncharted with Hannah Fry",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Please Use Other Door",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Naturebang",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Just a Minute",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Coming Storm",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "39 Ways to Save the Planet",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Male Order",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Supersenses",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Influenced",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Sideways",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Austentatious",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Sliced Bread",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Why Do We Do That?",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Hamish and Dougal: You'll Have Had Your Tea?",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Ed Reardon's Week",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Hennikay",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Alexei Sayle's Imaginary Sandwich Bar",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Simon Evans Goes to Market",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Climate Tipping Points",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "A Thorough Examination with Drs Chris and Xand",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Think with Pinker",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Conversations from a Long Marriage",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Now Show",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "BBC Inside Science",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "It's a Fair Cop",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Mark Steel's in Town",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Dead Ringers",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "You're Dead to Me",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The News Quiz",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "The Unbelievable Truth",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Tom Wrigglesworth's Hang-Ups",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "My First Planet",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "John Finnemore's Souvenir Programme",
+      "start_from_date": "2026-04-01"
+    },
+    {
+      "name": "Cabin Pressure",
+      "start_from_date": "2026-04-01"
     }
   ]
 }
