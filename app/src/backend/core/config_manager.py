@@ -6,6 +6,7 @@ from src.backend.schemas.config import AppConfig
 
 logger = logging.getLogger(__name__)
 
+
 class ConfigManager:
     def __init__(self, config_path: str = "/config/config.json"):
         self.config_path = Path(config_path)
@@ -20,7 +21,7 @@ class ConfigManager:
             return self.config
 
         try:
-            with open(self.config_path, 'r') as f:
+            with open(self.config_path, "r") as f:
                 data = json.load(f)
                 self.config = AppConfig(**data)
                 logger.info("Successfully loaded configuration")

@@ -48,11 +48,11 @@ As a user I want the service to convert the programme files it downloads into po
 
 ### Acceptance Criteria
 
-- [ ] A podcast feed is generated consisting of a single RSS feed for all programmes, with one entry per episode.
+- [x] A podcast feed is generated consisting of a single RSS feed for all programmes, with one entry per episode.
 - [ ] The feed is ordered by date and time of the broadcast (oldest first).
-- [ ] Each feed entry includes a link to the audio file.
-- [ ] The podcast feed is served over HTTP on a port number defined an environment variable.
-- [ ] The podcast feed is generated in a format that is compatible with the podcast player AntennaPod running on Android.
+- [x] Each feed entry includes a link to the audio file.
+- [x] The podcast feed is served over HTTP on a port number defined an environment variable.
+- [x] The podcast feed is generated in a format that is compatible with the podcast player AntennaPod running on Android.
 - [ ] The metadata added to the feed includes all of the metadata about the programme that is available from get_iplayer, embedded within the podcast feed.
 - [ ] The podcast feed should be updated in place, so that the feed is always up to date.
 - [ ] Once the first client has successfully downloaded an episode, it should no longer be available in the podcast feed for download, and the audio file should be deleted from the filesystem if a global config property "delete_on_download" is set to true.

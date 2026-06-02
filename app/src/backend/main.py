@@ -16,18 +16,18 @@ from src.backend.db.state import StateManager
 logger = logging.getLogger()
 logHandler = logging.StreamHandler()
 formatter = jsonlogger.JsonFormatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s',
-    json_ensure_ascii=False
+    "%(asctime)s %(levelname)s %(name)s %(message)s", json_ensure_ascii=False
 )
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 logger.setLevel(logging.DEBUG)
 
+
 async def polling_task():
     config_manager = ConfigManager()
     state_manager = StateManager()
     poller = Poller(config_manager, state_manager)
-    
+
     while True:
         try:
             logger.info("Starting polling cycle")
@@ -35,9 +35,10 @@ async def polling_task():
             await poller.poll_all()
         except Exception as e:
             logger.error(f"Error in polling cycle: {e}")
-            
+
         # Sleep for 1 hour
         await asyncio.sleep(3600)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -51,14 +52,17 @@ async def lifespan(app: FastAPI):
     except asyncio.CancelledError:
         pass
 
+
 app = FastAPI(title="sounds-to-feed API", lifespan=lifespan)
 
 app.include_router(feed.router)
 app.include_router(audio.router)
 
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
