@@ -2,6 +2,15 @@
 
 Sounds to Feed is a Python 3.12 service designed to periodically poll and download BBC Radio programmes using `get_iplayer`, and dynamically expose them as a standardized podcast RSS feed compatible with mobile podcast players like AntennaPod.
 
+> [!WARNING]
+> **Single User Constraints**:
+> This service is strictly designed for a **single user** setup:
+> - **One Configuration**: Programmed via a single configuration file.
+> - **One Feed**: Exposes a single, unified podcast RSS feed (`/feed.xml`).
+> - **One Client**: Designed to be consumed by exactly one client podcast player. 
+> 
+> Once the first client successfully downloads an episode, the file is considered "served" and is immediately deleted from the filesystem (if `delete_on_download` is enabled). Any subsequent attempts to download the same episode will fail (HTTP 404).
+
 ---
 
 ## Architecture Overview
