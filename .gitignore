@@ -64,3 +64,6 @@ playwright-report/
 data/
 *.db
 *.db.bak
+
+# Local secrets & credentials
+release_container.sh
