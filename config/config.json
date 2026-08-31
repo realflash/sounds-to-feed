@@ -1,6 +1,7 @@
 {
   "global_config": {
-    "delete_on_download": true
+    "delete_on_download": true,
+    "expiry_days": 7
   },
   "programmes": [
     {
