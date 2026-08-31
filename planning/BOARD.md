@@ -12,6 +12,7 @@
 
 
 ## ✅ Done (Completed)
+- [x] EPIC-002 Time-based Expiry
 - [x] BUG-2606020408: Missing show notes and cover art/icon in podcast feed
 - [x] tweak-feed-order: Sort feed items by mtime ascending so feedgen renders newest-first
 - [x] BUG-2605231738: Poller stops downloading after 21 episodes
