@@ -6,6 +6,9 @@ ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
 COPY app/pyproject.toml app/uv.lock* ./
+# Re-resolve to the latest versions on every build so container rebuilds pick up
+# security fixes automatically. Local dev keeps using the committed uv.lock.
+RUN uv lock --upgrade
 RUN if [ -f uv.lock ]; then uv export --no-dev --format requirements-txt > requirements.txt; else uv pip compile pyproject.toml -o requirements.txt; fi
 RUN uv pip install --system --no-cache -r requirements.txt
 # Remove pip and build tools to reduce the vulnerability surface of the runtime image
