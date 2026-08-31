@@ -9,7 +9,7 @@ Sounds to Feed is a Python 3.12 service designed to periodically poll and downlo
 > - **One Feed**: Exposes a single, unified podcast RSS feed (`/feed.xml`).
 > - **One Client**: Designed to be consumed by exactly one client podcast player. 
 > 
-> Once the first client successfully downloads an episode, the file is considered "served" and is immediately deleted from the filesystem (if `delete_on_download` is enabled). Any subsequent attempts to download the same episode will fail (HTTP 404).
+> Episodes are retained on disk for a configurable `expiry_days` window (default 7 days) measured from their first download, after which they are automatically expired: moved to a "served" state and deleted from the filesystem. Once an episode is expired, any subsequent attempt to download it will fail (HTTP 404). This decouples deletion from the client's download behaviour, so a client can safely re-request an episode within its window.
 
 ---
 
@@ -17,8 +17,8 @@ Sounds to Feed is a Python 3.12 service designed to periodically poll and downlo
 
 1. **Background Poller**: Periodically fetches and parses the BBC RMS API to find new episodes matching configured programmes, invokes `get_iplayer` to download them to a local directory, and extracts cover art to sidecar `.jpg` files.
 2. **FastAPI Web Server**: Serves a dynamic, AntennaPod-compatible podcast feed at `/feed.xml`, streams `.m4a` audio files at `/audio/{pid}`, and serves dynamic cover art at `/cover/{pid}.jpg`.
-3. **Lifecycle State Management**: Uses a local SQLite database (`state.db` under `/data`) to track the status of downloaded and served episodes.
-4. **Delete-on-Download**: Once an episode's audio file has been successfully streamed/downloaded by a client, the service automatically deletes the audio file and its sidecar cover art from disk to conserve space (if `delete_on_download` is enabled in config).
+3. **Lifecycle State Management**: Uses a local SQLite database (`state.db` under `/data`) to track the status of downloaded and served episodes, including the timestamp of each episode's first download.
+4. **Time-based Expiry**: A background expiry task (running hourly alongside polling) retires episodes once they are older than the configured `expiry_days` window. An expired episode is moved to a "served" state and its audio file and sidecar cover art are deleted from disk to conserve space. Expiry events are logged in structured JSON (including the episode ID and expiry timestamp).
 
 ---
 
@@ -41,6 +41,7 @@ Example structure:
 {
   "global_config": {
     "delete_on_download": true,
+    "expiry_days": 7,
     "output_dir": "/data"
   },
   "programmes": [
@@ -57,7 +58,8 @@ Example structure:
 }
 ```
 
-- **`delete_on_download`**: Delete audio and cover files once successfully served to a client.
+- **`expiry_days`**: Number of days an episode is retained after its first download before being automatically expired (moved to "served" and deleted). Defaults to `7`. Changing this value takes effect on the next poll cycle without a rebuild.
+- **`delete_on_download`**: *Deprecated.* Episodes are no longer deleted based on a client successfully downloading them; retention is now governed entirely by `expiry_days`. The field is retained only for backwards compatibility with existing config files.
 - **`programmes`**: A list of programmes to poll.
   - **`name`**: The exact programme name as known to `get_iplayer`.
   - **`start_from_date`**: (Optional) Filter out episodes broadcast before this date (ISO format `YYYY-MM-DD`).
