@@ -41,7 +41,6 @@ Example structure:
 ```json
 {
   "global_config": {
-    "delete_on_download": true,
     "expiry_days": 7,
     "output_dir": "/data"
   },
