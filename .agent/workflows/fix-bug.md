@@ -16,25 +16,18 @@ If the user tells you that you have not successfully fixed an existing bug, or t
 3. Change the status of the bug in planning/BOARD.md as BUG-<ID> back to unfixed.
 4. Reproduce the bug yourself.
 5. Assess whether you have enough information about the scenario in which the bug occurred to have a reasonable guess at the cause. Consider whether it would be faster to ask the user for more information than have multiple guesses.
-<<<<<<< HEAD
-6. If a bugfix branch for this bug exists, switch to it. Otherwise create a new bugfix branch bug/<ID> off of main and switch to it
-=======
 6. If a bugfix branch for this bug exists, switch to it. Otherwise, note your current branch and create a new bugfix branch bug/<ID> off of it. State the parent branch name in the chat.
->>>>>>> 880c4c5 (Re-add .agent)
 7. Sync with Main: 
   * Run `git fetch origin main`.
   * Run `git merge origin/main` into the feature branch to ensure the feature is built on the latest code.
 8. The build the user is testing must have previously passed all existing tests in order to have been deployed to user testing. The fact that the bug is still present means that test coverage is insufficient. Write a new playwright test which invokes the bug and fails or update an existing test if you think that is more appropriate. You will have to determine whether it should be a system test or a mocked test.
 9. Now run the /test-failure workflow.
-<<<<<<< HEAD
-10. Confirm that ./build_container.sh completes without error. If it does not, attempt to fix it and continue running it unil it does complete without error.
-11. Execute the following command in a terminal: `notify-send bug-<ID> Bug fix ready for UAT`  
-=======
-10. Confirm that ./build.sh completes without error. If it does not, attempt to fix it and continue running it unil it does complete without error.
-11. Update planning/BOARD.md to indicate that the bug is now fixed.
-12. Run `git push origin bug/<ID>`.
-13. Execute the following command in a terminal: `notify-send bug-<ID> Bug fixed`  
->>>>>>> 880c4c5 (Re-add .agent)
+10. Bump the last component of the semver VERSION file for the component(s) you have modified
+11. Confirm that ./build_container.sh completes without error for the component(s) you have modified. If it does not, attempt to fix it and continue running it unil it does complete without error.
+12. Execute the following command in a terminal: `notify-send bug-<ID> Bug fix ready for UAT`  
+13. Update planning/BOARD.md to indicate that the bug is now fixed.
+14. Run `git push origin bug/<ID>`.
+15. Execute the following command in a terminal: `notify-send bug-<ID> Bug fixed`  
 
 Stop after these steps. Do not attempt to implement any other functionality.
 
@@ -51,27 +44,15 @@ Run these steps if the user does not say that an existing bug is not fixed.
 2. Generate a ten-digit unique ID for the bug based on the ISO UTC datetime it was reported like YYMMDDHHMM.
 3. Log the bug in planning/BOARD.md as BUG-<ID> and give it a short description
 4. Assess whether you have enough information about the scenario in which the bug occurred to have a reasonable guess at the cause. Consider whether it would be faster to ask the user for more information than have multiple guesses.
-<<<<<<< HEAD
-5. Create a new bugfix branch bug/<ID> off of main and switch to it
-=======
 5. Note your current branch and create a new bugfix branch bug/<ID> off of it. State the parent branch name in the chat.
->>>>>>> 880c4c5 (Re-add .agent)
 6. Sync with Main: 
   * Run `git fetch origin main`.
   * Run `git merge origin/main` into the feature branch to ensure the feature is built on the latest code.
 7. The build the user is testing must have previously passed all existing tests in order to have been deployed to user testing. The fact that they have found a bug means that test coverage is insufficient. Write a new playwright test which invokes the bug and fails. You will have to determine whether it should be a system test or a mocked test.
 8. Now run the /test-failure workflow.
-<<<<<<< HEAD
-10. Confirm that ./build_container.sh completes without error. If it does not, attempt to fix it and continue running it unil it does complete without error.
-11. Execute the following command in a terminal: `notify-send bug-<ID> Bug fix ready for UAT`  
-
-Stop after these steps. Do not attempt to implement any other functionality.
-=======
 10. Confirm that ./build.sh completes without error. If it does not, attempt to fix it and continue running it unil it does complete without error.
 9. Update planning/BOARD.md to indicate that the bug is now fixed.
 10. Run `git push origin bug/<ID>`.
 11. Execute the following command in a terminal: `notify-send bug-<ID> Bug fixed`  
 
 Stop after these steps. Do not attempt to implement any other functionality.
-
->>>>>>> 880c4c5 (Re-add .agent)
