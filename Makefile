@@ -31,7 +31,7 @@ lint-backend: ## Run web static analysis
 
 code-scan: ## Run source-level security scanners
 	@echo "Running Source Code Security Scans..."
-	cd app && uv run pip-audit -r requirements.txt
+	cd app && uv export --no-dev --format requirements-txt | uv run pip-audit -r /dev/stdin
 	cd app && uv run bandit -c pyproject.toml -r src/backend
 	docker run --rm -v $(PWD):/src returntocorp/semgrep semgrep --config auto /src --error
 
