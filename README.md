@@ -26,6 +26,7 @@ Sounds to Feed is a Python 3.12 service designed to periodically poll and downlo
 
 ### Prerequisites
 - Python 3.12
+- `python3.12-venv` (Debian/Ubuntu: `sudo apt-get install -y python3.12-venv`) — required so `pip-audit` can build an isolated environment when running `make code-scan`
 - `uv` (for package management)
 - `get_iplayer` (with Perl dependencies, required for local downloading)
 - Docker (for containerized runs)
