@@ -1,5 +1,0 @@
-appId: com.anonymous.mobile
----
-- launchApp
-- assertVisible: "Workshop"
-- assertVisible: "Sign in with Google"
