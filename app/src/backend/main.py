@@ -9,6 +9,7 @@ from pythonjsonlogger import jsonlogger
 
 from src.backend.api import audio, feed
 from src.backend.core.config_manager import ConfigManager
+from src.backend.core.expiry import ExpiryManager
 from src.backend.core.poller import Poller
 from src.backend.db.state import StateManager
 
@@ -27,12 +28,14 @@ async def polling_task():
     config_manager = ConfigManager()
     state_manager = StateManager()
     poller = Poller(config_manager, state_manager)
+    expiry_manager = ExpiryManager(state_manager)
 
     while True:
         try:
             logger.info("Starting polling cycle")
             config_manager.load_config()
             await poller.poll_all()
+            expiry_manager.expire_due_episodes(config_manager.get_config().global_config)
         except Exception as e:
             logger.error(f"Error in polling cycle: {e}")
 

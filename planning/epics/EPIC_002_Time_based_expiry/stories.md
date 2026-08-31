@@ -6,10 +6,10 @@ As a user I have observed that the previous strategy of marking an episode downl
 
 ### Acceptance Criteria
 
-- [ ] The service implements a time-based expiry mechanism to automatically mark episodes as "served" after a configurable duration (e.g., 7 days).
-- [ ] The expiry check runs at regular intervals (e.g., every hour) alongside the existing hourly polling for new content.
-- [ ] The service maintains a record of when each episode was first downloaded to calculate the expiry timestamp.
-- [ ] Once an episode expires, it is moved to a "served" state and no longer required for download management. The episode file is deleted from the filesystem.
-- [ ] The service logs expiry events to the console using structured JSON format, including the episode ID and expiry timestamp.
-- [ ] The expiry duration is configurable via the existing JSON configuration file (e.g., `expiry_days` field).
-- [ ] The service no longer expires episodes when it thinks the user has successfully completed the download.
+- [x] The service implements a time-based expiry mechanism to automatically mark episodes as "served" after a configurable duration (e.g., 7 days).
+- [x] The expiry check runs at regular intervals (e.g., every hour) alongside the existing hourly polling for new content.
+- [x] The service maintains a record of when each episode was first downloaded to calculate the expiry timestamp.
+- [x] Once an episode expires, it is moved to a "served" state and no longer required for download management. The episode file is deleted from the filesystem.
+- [x] The service logs expiry events to the console using structured JSON format, including the episode ID and expiry timestamp.
+- [x] The expiry duration is configurable via the existing JSON configuration file (e.g., `expiry_days` field).
+- [x] The service no longer expires episodes when it thinks the user has successfully completed the download.

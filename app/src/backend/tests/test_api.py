@@ -137,3 +137,18 @@ def test_cover_endpoint_serves_bytes():
         assert response.headers["content-type"] == "image/jpeg"
         # Verify it wrote the sidecar file
         mock_write.assert_called_once()
+
+
+def test_audio_download_does_not_mark_served(tmp_path):
+    # EPIC-002: an episode must stay DOWNLOADED after a client download so it can
+    # be re-requested; it is only retired by the time-based ExpiryManager.
+    audio_file = tmp_path / "testpid_Business_Daily_ep.m4a"
+    audio_file.write_bytes(b"dummy audio")
+    mock_state.get_episode.return_value = {
+        "status": "DOWNLOADED",
+        "filename": str(audio_file),
+    }
+
+    response = client.get("/audio/testpid")
+    assert response.status_code == 200
+    mock_state.mark_served.assert_not_called()
