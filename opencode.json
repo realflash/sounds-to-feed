@@ -1,0 +1,45 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "command": {
+    "accept-work": {
+      "template": "Follow the workflow in @.agent/workflows/accept-work.md to accept the completed work.",
+      "description": "Merge completed work branch into parent"
+    },
+    "crash-recovery": {
+      "template": "Follow the workflow in @.agent/workflows/crash-recovery.md to recover from a crashed agent.",
+      "description": "Recover from an agent crash"
+    },
+    "design-epic": {
+      "template": "Follow the workflow in @.agent/workflows/design-epic.md to design the implementation of an epic.",
+      "description": "Design an epic implementation"
+    },
+    "develop-story": {
+      "template": "Follow the workflow in @.agent/workflows/develop-story.md to develop a story.",
+      "description": "Develop a story"
+    },
+    "fix-bug": {
+      "template": "Follow the workflow in @.agent/workflows/fix-bug.md to fix a bug. Bug details: $ARGUMENTS",
+      "description": "Fix a bug"
+    },
+    "implement-epic-tweak": {
+      "template": "Follow the workflow in @.agent/workflows/implement-epic-tweak.md to implement a tweak.",
+      "description": "Implement a tweak to an epic"
+    },
+    "implement-epic": {
+      "template": "Follow the workflow in @.agent/workflows/implement-epic.md to implement the epic.",
+      "description": "Implement an epic end-to-end"
+    },
+    "release-container": {
+      "template": "Follow the workflow in @.agent/workflows/release-container.md to release a container.",
+      "description": "Release a container to the registry"
+    },
+    "test-failure": {
+      "template": "Follow the workflow in @.agent/workflows/test-failure.md to deal with a test failure.",
+      "description": "Diagnose and fix a test failure"
+    },
+    "test": {
+      "template": "Follow the workflow in @.agent/workflows/test.md to test after a change.",
+      "description": "Run tests after a change"
+    }
+  }
+}
