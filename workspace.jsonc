@@ -1,0 +1,19 @@
+// workspace.jsonc
+{
+  "mounts": [
+    // Product coding standards (read-only)
+    {
+      "name": "product_standards",
+      "host_path": "../product_standards", // Supports relative paths from project root
+      "container_path": "/workspace/product_standards",
+      "mode": "ro"
+    },
+    // Shared Kubernetes infrastructure manifests (read-write so agents can update helm/k8s files)
+    {
+      "name": "infrastructure3",
+      "host_path": "../infrastructure3", // Or absolute host paths
+      "container_path": "/workspace/infrastructure3",
+      "mode": "rw"
+    }
+  ]
+}
