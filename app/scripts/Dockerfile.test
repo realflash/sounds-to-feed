@@ -1,14 +1,34 @@
-FROM debian:12-slim AS builder
-RUN apt-get update && apt-get install -y perl curl ffmpeg atomicparsley libc6
-RUN curl -L https://raw.githubusercontent.com/get-iplayer/get_iplayer/master/get_iplayer -o /usr/local/bin/get_iplayer && chmod +x /usr/local/bin/get_iplayer
+# syntax=docker/dockerfile:1
+#
+# Container smoke test for the standard base image pattern used by Sounds to Feed.
+# Built on the same shared rolling standard base as the production image, hardened
+# in place, and used to prove get_iplayer + its Perl toolchain run after hardening.
 
-FROM gcr.io/distroless/python3-debian12
-COPY --from=builder /usr/bin/perl /usr/bin/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libperl.so.5.36 /usr/lib/x86_64-linux-gnu/
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libcrypt.so.1 /usr/lib/x86_64-linux-gnu/
-COPY --from=builder /usr/share/perl /usr/share/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/perl /usr/lib/x86_64-linux-gnu/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl-base
-COPY --from=builder /usr/local/bin/get_iplayer /usr/local/bin/get_iplayer
-COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
+# Stage 1: dependency stage on the shared rolling standard base (has shell + apt).
+FROM registry.digitalocean.com/attono/attono-base:latest AS deps
+
+# Pin get_iplayer to a real upstream release tag (not master) for reproducibility.
+ARG GETIPLAYER_VERSION=v3.36
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        perl \
+        libxml-simple-perl \
+        liblwp-protocol-https-perl \
+        libmojolicious-perl \
+        libcgi-pm-perl \
+        ffmpeg \
+        atomicparsley \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL "https://raw.githubusercontent.com/get-iplayer/get_iplayer/${GETIPLAYER_VERSION}/get_iplayer" \
+        -o /usr/local/bin/get_iplayer && \
+    chmod +x /usr/local/bin/get_iplayer
+
+# Stage 2: final image IS the deps stage, hardened in place. JSON-array
+# ENTRYPOINT only (no shell survives attono-harden).
+FROM deps
+RUN /usr/local/bin/attono-harden
+
 ENTRYPOINT ["/usr/bin/perl", "/usr/local/bin/get_iplayer", "--version"]

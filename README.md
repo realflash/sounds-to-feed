@@ -1,6 +1,6 @@
 # Sounds to Feed
 
-Sounds to Feed is a Python 3.12 service designed to periodically poll and download BBC Radio programmes using `get_iplayer`, and dynamically expose them as a standardized podcast RSS feed compatible with mobile podcast players like AntennaPod.
+Sounds to Feed is a Python service (current-stable Debian + Python 3.13, provided by the Attono standard base image) designed to periodically poll and download BBC Radio programmes using `get_iplayer`, and dynamically expose them as a standardized podcast RSS feed compatible with mobile podcast players like AntennaPod.
 
 > [!WARNING]
 > **Single User Constraints**:
@@ -25,8 +25,8 @@ Sounds to Feed is a Python 3.12 service designed to periodically poll and downlo
 ## Getting Started
 
 ### Prerequisites
-- Python 3.12
-- `python3.12-venv` (Debian/Ubuntu: `sudo apt-get install -y python3.12-venv`) — required so `pip-audit` can build an isolated environment when running `make code-scan`
+- Python 3.13 (current-stable, provided in-container by the standard base image; the tooling does not pin a Python minor version)
+- A Python 3 venv module — required so `pip-audit` can build an isolated environment when running `make code-scan`
 - `uv` (for package management)
 - `get_iplayer` (with Perl dependencies, required for local downloading)
 - Docker (for containerized runs)
@@ -123,7 +123,32 @@ make build
 # or run the validation-enforced build script:
 ./build_container.sh
 ```
-This generates `sounds-to-feed-app:latest` using a multi-stage distroless base containing Python 3.12 and `get_iplayer`.
+This generates `sounds-to-feed-app:latest` from `registry.digitalocean.com/attono/attono-base:latest`
+(locally `attono-base`), the company-standard base image. That base ships current-stable
+Debian + Python 3.13, Node/npm, `uv`, and `attono-harden`; it is intentionally rolling
+(`:latest`), so freshness comes for free. Pin by image **digest** if you need a
+byte-reproducible build; the exact component versions are recorded inside the image at
+`/attono/manifest.json`.
+
+The Dockerfile follows the standard two-stage pattern (`/workspace/product_standards/base/README.md`):
+
+- **`FROM registry.digitalocean.com/attono/attono-base:latest AS deps`** — the only stage with a
+  shell + package manager. Product-specific tooling (`perl` plus `libxml-simple-perl`,
+  `liblwp-protocol-https-perl`, `libmojolicious-perl`, `libcgi-pm-perl`, `ffmpeg`,
+  `atomicparsley`, `ca-certificates`) and a **pinned** `get_iplayer` release (e.g. `v3.36`, not
+  `master`) are installed here, then Python deps are installed into the base's system Python.
+  Each product component and the reason for its pin is appended to `/attono/manifest.json`.
+- **`FROM deps` + `RUN /usr/local/bin/attono-harden`** — the final image *is* the dependency
+  stage, hardened **in place**. Because the full filesystem is inherited, the `.so`
+  dependencies of every product tool carry into the final image automatically; you never
+  enumerate libraries and you never `COPY --from=` a pre-hardened base. After hardening there
+  is no shell/apt/curl/wget, so the `ENTRYPOINT` is a JSON array (`["python", "-m",
+  "src.backend.main"]`) — never shell-form.
+
+No hardcoded Python minor version paths (no `/usr/local/lib/python3.12/...`), no
+`gcr.io/distroless/*`, no `python:3.12-slim`, and no `debian:12-slim`/`uv` builder as the
+final image. The app is a normal, self-contained runtime service, so it fits the standard
+**Scenario A/B** pattern with no exception required — **no Scenario D exemption is needed**.
 
 ### 2. Tag and Push to Private Registry
 A template script is provided to push images to DigitalOcean Container Registry:

@@ -1,18 +1,37 @@
-cat << 'DOCKERFILE' > Dockerfile.test
-FROM debian:12-slim AS builder
-RUN apt-get update && apt-get install -y perl curl ffmpeg atomicparsley libc6
-RUN curl -L https://raw.githubusercontent.com/get-iplayer/get_iplayer/master/get_iplayer -o /usr/local/bin/get_iplayer && chmod +x /usr/local/bin/get_iplayer
+#!/usr/bin/env bash
+# Build and run the get_iplayer smoke test on the standard base image pattern.
+set -euo pipefail
 
-FROM gcr.io/distroless/python3-debian12
-COPY --from=builder /usr/bin/perl /usr/bin/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libperl.so.5.36 /usr/lib/x86_64-linux-gnu/
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libcrypt.so.1 /usr/lib/x86_64-linux-gnu/
-COPY --from=builder /usr/share/perl /usr/share/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/perl /usr/lib/x86_64-linux-gnu/perl
-COPY --from=builder /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl-base
-COPY --from=builder /usr/local/bin/get_iplayer /usr/local/bin/get_iplayer
-COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
+cd "$(dirname "$0")/.."
+
+cat << 'DOCKERFILE' > Dockerfile.test
+# syntax=docker/dockerfile:1
+# Smoke test for the standard base image pattern used by Sounds to Feed.
+FROM registry.digitalocean.com/attono/attono-base:latest AS deps
+
+ARG GETIPLAYER_VERSION=v3.36
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        perl \
+        libxml-simple-perl \
+        liblwp-protocol-https-perl \
+        libmojolicious-perl \
+        libcgi-pm-perl \
+        ffmpeg \
+        atomicparsley \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL "https://raw.githubusercontent.com/get-iplayer/get_iplayer/${GETIPLAYER_VERSION}/get_iplayer" \
+        -o /usr/local/bin/get_iplayer && \
+    chmod +x /usr/local/bin/get_iplayer
+
+FROM deps
+RUN /usr/local/bin/attono-harden
+
 ENTRYPOINT ["/usr/bin/perl", "/usr/local/bin/get_iplayer", "--version"]
 DOCKERFILE
-docker build -t test-distroless -f Dockerfile.test .
-docker run --rm test-distroless
+
+docker build --load -t test-attono-base -f Dockerfile.test .
+docker run --rm test-attono-base
