@@ -29,11 +29,12 @@ lint: lint-backend ## Run all static analysis
 lint-backend: ## Run web static analysis
 	cd app && PYTHONPATH=. $(RUN_UV) ruff check src/backend
 
-code-scan: ## Run source-level security scanners
+code-scan: ## Run source-level security scanners (Docker-free)
 	@echo "Running Source Code Security Scans..."
 	cd app && uv export --no-dev --format requirements-txt | uv run pip-audit -r /dev/stdin
 	cd app && uv run bandit -c pyproject.toml -r src/backend
-	docker run --rm -v $(PWD):/src returntocorp/semgrep semgrep --config auto /src --error
+	semgrep --config auto --error --quiet app/src
+	trivy config --exit-code 1 --quiet .
 
 container-scan: ## Run container vulnerability scanner
 	@echo "Running Container Security Scan..."
