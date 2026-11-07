@@ -147,9 +147,23 @@ PY
 # needs them and the ENTRYPOINT must be a JSON array.
 # ============================================================================
 FROM deps
+
+# Run the container as an unprivileged user (CIS Docker Benchmark DS-0002).
+# The user MUST be created here, before attono-harden removes the shell and the
+# useradd tooling. /data and /config are chowned so the unprivileged process can
+# still write its SQLite state and configuration.
+RUN useradd --create-home --uid 10001 appuser && mkdir -p /data /config && chown -R appuser:appuser /data /config
+
 RUN /usr/local/bin/attono-harden
 
 EXPOSE 8000
 VOLUME ["/data", "/config"]
+
+# Container health probe (CIS Docker Benchmark DS-0026). The hardened image has
+# no shell/curl/wget, so probe the app /health endpoint with the Python
+# interpreter that remains in the image (JSON exec form needs no shell).
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"]
+
+USER appuser
 
 ENTRYPOINT ["python", "-m", "src.backend.main"]

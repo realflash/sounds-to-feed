@@ -29,6 +29,18 @@ RUN curl -fsSL "https://raw.githubusercontent.com/get-iplayer/get_iplayer/${GETI
 # Stage 2: final image IS the deps stage, hardened in place. JSON-array
 # ENTRYPOINT only (no shell survives attono-harden).
 FROM deps
+
+# Run the smoke test as an unprivileged user (CIS Docker Benchmark DS-0002).
+# Created before attono-harden removes the shell/useradd tooling.
+RUN useradd --create-home --uid 10001 appuser
+
 RUN /usr/local/bin/attono-harden
+
+USER appuser
+
+# Health probe (CIS Docker Benchmark DS-0026). The hardened image has no shell,
+# so use the JSON exec form. This image is a get_iplayer smoke test, so the probe
+# verifies the pinned get_iplayer binary still executes after hardening.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD ["/usr/bin/perl", "/usr/local/bin/get_iplayer", "--version"]
 
 ENTRYPOINT ["/usr/bin/perl", "/usr/local/bin/get_iplayer", "--version"]

@@ -9,10 +9,11 @@
 ## 🚀 In Progress (Active)
 - [/] [EPIC-001: Managed get_iplayer](epics/EPIC_001_Managed_get_iplayer)
   - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
-- [ ] BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
+- [x] BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
 
 
 ## ✅ Done (Completed)
+- [x] BUG-2611061737 (code-scan): Pin-healthcheck and non-root USER added to Dockerfile + app/scripts/Dockerfile.test so trivy config passes (DS-0002, DS-0026); DS-0001 remains an intentional policy ignore for the rolling base.
 - [x] EPIC-002 Time-based Expiry
 - [x] BUG-2606020408: Missing show notes and cover art/icon in podcast feed
 - [x] tweak-feed-order: Sort feed items by mtime ascending so feedgen renders newest-first
@@ -23,4 +24,5 @@
 - [x] tweak-2605221314 (EPIC-001 Polling & RSS generation)
 - [x] BUG-2605221156: Container exits immediately because `main.py` has no entrypoint
 - [x] Initial Repository Setup
-
+- BUG-2611061737: The code-scan stage still fails, duplicating the already-open and unfixed BUG-2611061737 ("The build process does not complete even though the environment now includes the tools needed to run all buil
+  status: fixed
