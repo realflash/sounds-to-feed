@@ -1,1 +1,7 @@
 ## AGENTS: You MUST NOT use this file without a user's permission. See product_standards/docs/standards/security-testing.md ##
+# DS-0001 (image tag "latest"): intentionally ignored by policy. The base image
+# is a rolling :latest on purpose so every build picks up the latest security
+# fixes; pinning the base risks shipping an artifact without current fixes.
+# Reproducibility comes from retaining every built image in the registry and
+# deploying by digest, not from pinning the base.
+DS-0001
