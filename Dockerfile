@@ -148,6 +148,21 @@ PY
 # ============================================================================
 FROM deps
 
+# Drop build-only tooling from the final image.
+#
+# `uv`/`uvx` are statically linked Rust binaries and the copies the standard base
+# ships embed a `rustls` that `trivy image` reports as vulnerable:
+#   GHSA-c8m5-c952-6cm4 (rustls: Debug formatting leaks TLS secrets/PSKs)
+#   GHSA-h2v8-394m-p7vv (rustls: Brotli cert decompression memory amplification)
+#   GHSA-vp88-798v-h67f (rustls: ECH rejection exposes buffered app data)
+#   GHSA-w44r-93j7-qv28 (rustls: ServerHello poisons per-name key exchange)
+# The product cannot patch the base's binary, and it is not needed at runtime:
+# the dependency stage above already installed every Python dependency into the
+# base's system Python. Shipping an unused package installer is pure attack
+# surface (base/requirements.md §2 "Provide hardening"; EPIC-003 minimal image
+# footprint), so remove it before hardening and before the image is scanned.
+RUN rm -f /usr/local/bin/uv /usr/local/bin/uvx
+
 # Run the container as an unprivileged user (CIS Docker Benchmark DS-0002).
 # The user MUST be created here, before attono-harden removes the shell and the
 # useradd tooling. /data and /config are chowned so the unprivileged process can
