@@ -29,12 +29,24 @@ lint: lint-backend ## Run all static analysis
 lint-backend: ## Run web static analysis
 	cd app && PYTHONPATH=. $(RUN_UV) ruff check src/backend
 
-code-scan: ## Run source-level security scanners (Docker-free)
+code-scan: ## Run source-level security scanners (native if installed, else Docker)
 	@echo "Running Source Code Security Scans..."
 	cd app && uv export --no-dev --format requirements-txt | uv run pip-audit -r /dev/stdin
 	cd app && uv run bandit -c pyproject.toml -r src/backend
-	semgrep --config auto --error --quiet app/src
-	trivy config --exit-code 1 --quiet .
+	@if command -v semgrep >/dev/null 2>&1; then \
+		echo "semgrep: native"; \
+		semgrep --config auto --error --quiet app/src; \
+	else \
+		echo "semgrep: Docker"; \
+		docker run --rm -v "$(CURDIR):/src" -w /src returntocorp/semgrep semgrep --config auto --error --quiet app/src; \
+	fi
+	@if command -v trivy >/dev/null 2>&1; then \
+		echo "trivy: native"; \
+		trivy config --exit-code 1 --quiet .; \
+	else \
+		echo "trivy: Docker"; \
+		docker run --rm -v "$(CURDIR):/src" -w /src aquasec/trivy config --exit-code 1 --quiet .; \
+	fi
 
 container-scan: ## Run container vulnerability scanner
 	@echo "Running Container Security Scan..."
