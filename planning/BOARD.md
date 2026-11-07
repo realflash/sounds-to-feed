@@ -27,3 +27,5 @@
 - [x] BUG-2611061737 (container-scan): the rejected fix left the base's statically linked `uv`/`uvx` Rust binaries in the final image, so `trivy image --exit-code 1 --ignore-unfixed` failed the build on fixed rustls advisories (GHSA-c8m5-c952-6cm4, GHSA-h2v8-394m-p7vv, GHSA-vp88-798v-h67f, GHSA-w44r-93j7-qv28). The final stage now removes them before `attono-harden`; `app/src/backend/tests/test_build_pipeline_completes.py` pins the contract.
 - BUG-2611061737: The code-scan stage still fails, duplicating the already-open and unfixed BUG-2611061737 ("The build process does not complete even though the environment now includes the tools needed to run all buil
   status: fixed
+
+- bug/2611061737: accepted
