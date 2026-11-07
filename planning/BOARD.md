@@ -9,6 +9,7 @@
 ## 🚀 In Progress (Active)
 - [/] [EPIC-001: Managed get_iplayer](epics/EPIC_001_Managed_get_iplayer)
   - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
+- [ ] BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
 
 
 ## ✅ Done (Completed)
@@ -23,12 +24,3 @@
 - [x] BUG-2605221156: Container exits immediately because `main.py` has no entrypoint
 - [x] Initial Repository Setup
 
-- BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
-- BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
-  status: fixed
-
-- BUG-2611061829: The build process does not complete—a multi-stage build (build.sh → build_container.sh) fails to reach completion even though the environment now has all non-Docker build tools, with no prior fix or r
-
-- BUG-2611061737: The build process fails to complete because a multi-stage build (build.sh → build_container.sh) does not reach completion, and a prior ticket (BUG-2611061737) addressing this same build-completion fai
-- BUG-2611061737: The build process fails to complete because a multi-stage build (build.sh → build_container.sh) does not reach completion, and a prior ticket (BUG-2611061737) addressing this same build-completion fai
-  status: unfixed
