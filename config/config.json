@@ -1,6 +1,6 @@
 {
   "global_config": {
-    "expiry_days": 180
+    "expiry_days": 14
   },
   "programmes": [
     {
