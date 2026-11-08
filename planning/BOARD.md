@@ -11,7 +11,6 @@
   - [/] [Stories](epics/EPIC_001_Managed_get_iplayer/stories.md)
 - [x] BUG-2611061737: The build process does not complete even though the environment now includes the tools needed to run all build stages except those requiring docker.
 
-
 ## ✅ Done (Completed)
 - [x] BUG-2611061737 (code-scan): Pin-healthcheck and non-root USER added to Dockerfile + app/scripts/Dockerfile.test so trivy config passes (DS-0002, DS-0026); DS-0001 remains an intentional policy ignore for the rolling base.
 - [x] EPIC-002 Time-based Expiry
@@ -29,9 +28,4 @@
   status: fixed
 
 - bug/2611061737: accepted
-
-- BUG-2611080335: The README's description of the background expiry task is ambiguous about whether episodes are retired based on their publish date or their download date, and needs to be clarified.
-- BUG-2611080335: The README's description of the background expiry task is ambiguous about whether episodes are retired based on their publish date or their download date, and needs to be clarified.
-  status: fixed
-
-- bug/2611080335: accepted
+- [x] BUG-2611080335: The README's description of the background expiry task is ambiguous about whether episodes are retired based on their publish date or their download date, and needs to be clarified.
