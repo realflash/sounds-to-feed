@@ -18,7 +18,7 @@ Sounds to Feed is a Python service (current-stable Debian + Python 3.13, provide
 1. **Background Poller**: Periodically fetches and parses the BBC RMS API to find new episodes matching configured programmes, invokes `get_iplayer` to download them to a local directory, and extracts cover art to sidecar `.jpg` files.
 2. **FastAPI Web Server**: Serves a dynamic, AntennaPod-compatible podcast feed at `/feed.xml`, streams `.m4a` audio files at `/audio/{pid}`, and serves dynamic cover art at `/cover/{pid}.jpg`.
 3. **Lifecycle State Management**: Uses a local SQLite database (`state.db` under `/data`) to track the status of downloaded and served episodes, including the timestamp of each episode's first download.
-4. **Time-based Expiry**: A background expiry task (running hourly alongside polling) retires episodes once they are older than the configured `expiry_days` window. An expired episode is moved to a "served" state and its audio file and sidecar cover art are deleted from disk to conserve space. Expiry events are logged in structured JSON (including the episode ID and expiry timestamp).
+4. **Time-based Expiry**: A background expiry task (running hourly alongside polling) retires episodes once they are older than the configured `expiry_days` window. The age is measured from the episode's first download (its download date, recorded as `downloaded_at` in the state database), **not** from the programme's publish/broadcast date. An expired episode is moved to a "served" state and its audio file and sidecar cover art are deleted from disk to conserve space. Expiry events are logged in structured JSON (including the episode ID and expiry timestamp).
 
 ---
 

@@ -29,3 +29,5 @@
   status: fixed
 
 - bug/2611061737: accepted
+
+- BUG-2611080335: The README's description of the background expiry task is ambiguous about whether episodes are retired based on their publish date or their download date, and needs to be clarified.
