@@ -10,7 +10,6 @@
 
 ## ✅ Done (Completed)
 - [x] BUG-2611061737 (code-scan): Pin-healthcheck and non-root USER added to Dockerfile + app/scripts/Dockerfile.test so trivy config passes (DS-0002, DS-0026); DS-0001 remains an intentional policy ignore for the rolling base.
-- [x] EPIC-002 Time-based Expiry
 - [x] BUG-2606020408: Missing show notes and cover art/icon in podcast feed
 - [x] tweak-feed-order: Sort feed items by mtime ascending so feedgen renders newest-first
 - [x] BUG-2605231738: Poller stops downloading after 21 episodes
@@ -24,3 +23,4 @@
 - [x] Initial Repository Setup
 - [x] BUG-2611061737: The code-scan stage still fails, duplicating the already-open and unfixed BUG-2611061737 ("The build process does not complete even though the environment now includes the tools needed to run all buil
 - [x] BUG-2611080335: The README's description of the background expiry task is ambiguous about whether episodes are retired based on their publish date or their download date, and needs to be clarified.
+- [x] EPIC-002: EPIC-002 Time-based Expiry
