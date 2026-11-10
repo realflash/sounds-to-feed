@@ -14,6 +14,19 @@
       "host_path": "../infrastructure3", // Or absolute host paths
       "container_path": "/workspace/infrastructure3",
       "mode": "rw"
+    },
+    // Standards and design are propose-only: mounted read-only over the rw tree.
+    {
+      "name": "infra_standards_ro",
+      "host_path": "../infrastructure3/documents/standards",
+      "container_path": "/workspace/infrastructure3/documents/standards",
+      "mode": "ro"
+    },
+    {
+      "name": "infra_design_ro",
+      "host_path": "../infrastructure3/documents/design",
+      "container_path": "/workspace/infrastructure3/documents/design",
+      "mode": "ro"
     }
   ]
 }
